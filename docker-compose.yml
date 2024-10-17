@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  fresh:
+    build: .
+    restart: unless-stopped\
+    environment:
+      - "OLLAMA_URL=http://ollama:11434"
+      - "FLAG=myflag{myreadableflag}"
+    networks:
+      - ollama
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.web0.rule=Host(`misc1.ctf2024.nckuctf.org`)"
+      - "traefik.http.services.web0.loadbalancer.server.port=8000"
+  ollama:
+    build: ollama
+    networks:
+      - ollama
+networks:
+  ollama:
